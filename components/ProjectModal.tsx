@@ -28,6 +28,9 @@ import {
   ImageIcon,
   ZoomIn,
 } from "lucide-react";
+import ArchitectureDiagram, {
+  ProjectArchitecture,
+} from "./ArchitectureDiagram";
 
 interface Project {
   title: string;
@@ -36,6 +39,7 @@ interface Project {
   details: string;
   tech: string[];
   images: string[];
+  architecture?: ProjectArchitecture;
   repositories?: {
     label: string;
     href: string;
@@ -67,7 +71,9 @@ export default function ProjectModal({ project }: { project: Project }) {
           }
         }}
       >
-        {project.images.length > 0 && (
+        {project.architecture ? (
+          <ArchitectureDiagram architecture={project.architecture} />
+        ) : project.images.length > 0 ? (
           <Gallery
             options={{
               bgOpacity: 0.98,
@@ -128,7 +134,7 @@ export default function ProjectModal({ project }: { project: Project }) {
               </Carousel>
             </div>
           </Gallery>
-        )}
+        ) : null}
 
         <div className="p-6 sm:p-10 space-y-8">
           <div className="space-y-4">

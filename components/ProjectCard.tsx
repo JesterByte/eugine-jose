@@ -1,6 +1,9 @@
 import Image from "next/image";
 import ProjectModal from "./ProjectModal";
 import { ArrowUpRight, Braces, Github } from "lucide-react";
+import ArchitectureDiagram, {
+  ProjectArchitecture,
+} from "./ArchitectureDiagram";
 
 interface ProjectCardProps {
   project: {
@@ -18,13 +21,19 @@ interface ProjectCardProps {
     details: string;
     tech: string[];
     images: string[];
+    architecture?: ProjectArchitecture;
   };
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-muted/20 transition-colors hover:border-primary/50">
-      {project.images.length > 0 ? (
+      {project.architecture ? (
+        <ArchitectureDiagram
+          architecture={project.architecture}
+          compact
+        />
+      ) : project.images.length > 0 ? (
         <div className="relative aspect-video overflow-hidden border-b border-border">
           <Image
             src={project.images[0]}
