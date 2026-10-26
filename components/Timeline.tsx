@@ -33,7 +33,7 @@ const items: TimelineItem[] = [
   {
     type: "Education",
     title: "B.S. Computer Science · ACLC College of Santa Maria",
-    date: "Graduated 2025 · month not specified",
+    date: "Graduated June 2025",
     dateTime: "2025",
     startYear: 2025,
     description:
