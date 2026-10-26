@@ -1,28 +1,11 @@
 import Image from "next/image";
 import ProjectModal from "./ProjectModal";
 import { ArrowUpRight, Braces, Github } from "lucide-react";
-import ArchitectureDiagram, {
-  ProjectArchitecture,
-} from "./ArchitectureDiagram";
+import ArchitectureDiagram from "./ArchitectureDiagram";
+import type { Project } from "@/lib/project-content";
 
 interface ProjectCardProps {
-  project: {
-    title: string;
-    category: string;
-    description: string;
-    links: {
-      github?: string | null;
-      live?: string | null;
-    };
-    repositories?: {
-      label: string;
-      href: string;
-    }[];
-    details: string;
-    tech: string[];
-    images: string[];
-    architecture?: ProjectArchitecture;
-  };
+  project: Project;
 }
 
 export default function ProjectCard({ project }: ProjectCardProps) {

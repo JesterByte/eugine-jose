@@ -1,26 +1,28 @@
 import ProjectCard from "@/components/ProjectCard";
 import ScrollReveal from "@/components/ScrollReveal";
 import type { ProjectArchitecture } from "@/components/ArchitectureDiagram";
+import type { Project } from "@/lib/project-content";
 
 const ceBuFlutterArchitecture: ProjectArchitecture = {
-  title: "Offline-first mobile application",
+  title: "Cebu Agua Lab Flutter application",
   caption:
-    "Local application work remains available offline; synchronization uses the remote API when connectivity is available.",
+    "Rebuilt with local persistence for offline use and two-way synchronization with a remote API.",
   accessibleDescription:
-    "Cebu Agua Lab Flutter architecture showing Flutter UI flowing through Riverpod to local Drift and SQLite persistence, two-way synchronization between the local store and a remote API, and a separate OTA update context involving Firebase Remote Config and AWS EC2.",
+    "Cebu Agua Lab Flutter case study showing the legacy View performing database operations and Models acting as helpers, the rebuilt Flutter application using Riverpod and Drift SQLite, two-way synchronization between local persistence and a remote API, and an OTA update workflow involving Firebase Remote Config and AWS EC2.",
   views: [
     {
-      title: "Application data and synchronization",
-      status: "Documented approach",
+      title: "Rebuilt application and offline data",
+      status: "Implemented",
       description:
-        "Local persistence supports offline use. The application also implements two-way synchronization with a remote API.",
+        "The rebuilt app uses Flutter/Dart, Riverpod, and Drift/SQLite. Local persistence supports offline operation.",
       flows: [
         {
-          label: "Local application flow · offline-capable",
+          label: "Application components · exact call path not specified",
+          direction: "related",
           nodes: [
             {
               label: "Flutter UI",
-              detail: "Presentation components",
+              detail: "Flutter / Dart application",
               kind: "application",
             },
             {
@@ -30,13 +32,13 @@ const ceBuFlutterArchitecture: ProjectArchitecture = {
             },
             {
               label: "Drift / SQLite",
-              detail: "Local persistence",
+              detail: "Local persistence for offline use",
               kind: "storage",
             },
           ],
         },
         {
-          label: "When network synchronization is available",
+          label: "Two-way synchronization with remote API",
           direction: "bidirectional",
           nodes: [
             {
@@ -46,24 +48,50 @@ const ceBuFlutterArchitecture: ProjectArchitecture = {
             },
             {
               label: "Remote API",
-              detail: "API technology and endpoints not specified",
+              detail: "API implementation details not specified",
               kind: "remote",
             },
           ],
         },
       ],
-      notes: [
-        "The specific sync algorithm, conflict policy, retry behavior, and queue design are not documented here.",
+    },
+    {
+      title: "Legacy architecture",
+      status: "Documented starting point",
+      description:
+        "The original View performed database work, Models were used as helpers, and a proper ViewModel layer was absent.",
+      flows: [
+        {
+          label: "Observed separation-of-concerns issues",
+          direction: "related",
+          nodes: [
+            {
+              label: "View",
+              detail: "Performed database operations",
+              kind: "legacy",
+            },
+            {
+              label: "Models",
+              detail: "Used as helpers",
+              kind: "legacy",
+            },
+            {
+              label: "ViewModel layer",
+              detail: "No proper layer",
+              kind: "legacy",
+            },
+          ],
+        },
       ],
     },
     {
       title: "Over-the-air updates",
-      status: "Components documented",
+      status: "Workflow implemented",
       description:
-        "Firebase Remote Config and an AWS EC2-based workaround were used as part of the OTA update workflow.",
+        "The application update mechanism involved Firebase Remote Config and an AWS EC2-based workaround.",
       flows: [
         {
-          label: "Related components · sequence not documented",
+          label: "Related components · implementation sequence not documented",
           direction: "related",
           nodes: [
             {
@@ -82,7 +110,7 @@ const ceBuFlutterArchitecture: ProjectArchitecture = {
         },
       ],
       notes: [
-        "Connector indicates a relationship, not an implementation order; download, hosting, version-checking, and installation details are unspecified.",
+        "Download, hosting, version-checking, and installation details are not specified.",
       ],
     },
   ],
@@ -347,21 +375,55 @@ const cebuLaravelArchitecture: ProjectArchitecture = {
   ],
 };
 
-const projects = [
+const projects: Project[] = [
   {
     title: "Cebu Agua Lab · Flutter application",
     category: "Offline-first mobile modernization",
     description:
-      "Reworked a legacy Flutter app around clearer state management, local persistence, and two-way API synchronization.",
-    tech: ["Flutter", "Riverpod", "Drift / SQLite", "Firebase", "AWS EC2"],
+      "Rebuilt a Flutter mobile application with Riverpod state management, Drift/SQLite local persistence, offline operation, two-way API synchronization, and an OTA update mechanism.",
+    tech: [
+      "Flutter",
+      "Dart",
+      "Riverpod",
+      "Drift / SQLite",
+      "Remote API",
+      "Firebase Remote Config",
+      "AWS EC2",
+    ],
     links: {},
-    details: `Context — A legacy Flutter application needed stronger separation of concerns and reliable operation when connectivity was unavailable.
-
-My contribution — Reworked the application using Riverpod for state management and Drift/SQLite for local persistence. Implemented offline functionality and two-way synchronization with a remote API.
-
-Technical approach — Added an over-the-air update workflow using Firebase and AWS EC2.
-
-Outcome — The client gave positive feedback during a review attended by IT management and a senior colleague. No performance figures are available.`,
+    caseStudy: {
+      role: "Junior Developer · Vox Dei Protocol Systems, Inc.",
+      status: "Rebuilt application · client feedback received",
+      sections: [
+        {
+          heading: "Context & challenge",
+          paragraphs: [
+            "The client application needed to work offline and synchronize local data with a remote API.",
+            "In the legacy app, the View performed database operations, Models were used as helpers, and there was no proper ViewModel layer. These concerns were coupled in the UI.",
+          ],
+        },
+        {
+          heading: "My contribution",
+          paragraphs: [
+            "Rebuilt the Flutter application using Dart, Riverpod for state management, and Drift/SQLite for local persistence.",
+            "Implemented offline operation and two-way synchronization with the remote API.",
+          ],
+        },
+        {
+          heading: "Technical approach",
+          paragraphs: [
+            "Used Riverpod and Drift/SQLite in the rebuilt application. The specific provider/controller pattern and additional repository or service layers are not described here.",
+            "Implemented an OTA update mechanism involving Firebase Remote Config and AWS EC2. The detailed download and installation sequence is not specified.",
+          ],
+        },
+        {
+          heading: "Outcome",
+          paragraphs: [
+            "The rebuilt app supports offline use, local persistence, and two-way API synchronization. The client praised the new version in a meeting attended by the IT manager and a senior colleague.",
+          ],
+        },
+      ],
+    },
     images: [],
     architecture: ceBuFlutterArchitecture,
   },
@@ -369,31 +431,81 @@ Outcome — The client gave positive feedback during a review attended by IT man
     title: "PMVIC · Cordova application",
     category: "Legacy application modernization",
     description:
-      "Restructured a procedural Cordova application toward MVVM and implemented an over-the-air update workflow.",
+      "Rewrote a procedural Cordova frontend into an MVVM-oriented implementation, improved UI/UX, and implemented an OTA update mechanism.",
     tech: ["Cordova", "MVVM", "Firebase Remote Config", "AWS EC2"],
     links: {},
-    details: `Context — The application was originally structured procedurally.
-
-My contribution — Reworked it toward an MVVM-oriented implementation and improved the interface and user experience.
-
-Technical approach — Implemented an over-the-air update workflow using Firebase Remote Config and an AWS EC2-based workaround, avoiding dependence on Play Store releases for that workflow.
-
-Outcome — The work addressed both application structure and the practical constraints of distributing updates.`,
+    caseStudy: {
+      role: "Junior Developer · Vox Dei Protocol Systems, Inc.",
+      status: "Frontend rewrite and OTA workflow implemented",
+      sections: [
+        {
+          heading: "Context & challenge",
+          paragraphs: [
+            "The PMVIC application frontend used a procedural Cordova structure. Updating through the Google Play Store was a constraint for the update workflow.",
+          ],
+        },
+        {
+          heading: "My contribution",
+          paragraphs: [
+            "Rewrote the frontend toward an MVVM-oriented implementation and improved the UI/UX.",
+          ],
+        },
+        {
+          heading: "Technical approach",
+          paragraphs: [
+            "Implemented an OTA update mechanism involving Firebase Remote Config and an AWS EC2-based workaround.",
+            "The exact version-check, hosting, download, and installation sequence is not documented here.",
+          ],
+        },
+        {
+          heading: "Outcome",
+          paragraphs: [
+            "The update workflow avoided requiring Google Play Store distribution for that workflow. No broader deployment or usage claims are made.",
+          ],
+        },
+      ],
+    },
     images: [],
     architecture: pmvicArchitecture,
   },
   {
-    title: "Campus Secure · WinUI 3",
+    title: "Campus Secure · WinForms to WinUI 3",
     category: "Desktop application modernization",
     description:
-      "Modernization work on a legacy WinForms application, targeting WinUI 3 and MVVM, with work across device integration and day-to-day workflows.",
+      "Modernization in progress on a legacy C# WinForms application, moving toward WinUI 3 and MVVM with work across device integration and desktop workflows.",
     tech: ["C#", ".NET", "WinUI 3", "WinForms", "MVVM"],
     links: {},
-    details: `Context — Campus Secure is a legacy C# WinForms application. The modernization work targets WinUI 3 and an MVVM-based architecture.
-
-My contribution — Worked on application functionality involving RFID/Hikvision integration, reporting, printing, filtering, and sorting.
-
-Status — This case study describes work performed; it does not imply the application is complete, deployed, or in production.`,
+    caseStudy: {
+      role: "Junior Developer · Vox Dei Protocol Systems, Inc.",
+      status: "Modernization in progress",
+      sections: [
+        {
+          heading: "Context & challenge",
+          paragraphs: [
+            "Campus Secure is a legacy C# WinForms application being modernized toward WinUI 3 and an MVVM-oriented structure.",
+          ],
+        },
+        {
+          heading: "My contribution",
+          paragraphs: [
+            "Worked on functionality involving RFID/Hikvision integration, reports, printing, filtering, and sorting.",
+          ],
+        },
+        {
+          heading: "Technical approach",
+          paragraphs: [
+            "The target direction is WinUI 3 and MVVM. No additional model, service, or data-access layers are claimed here.",
+            "Device protocols and SDK details are not included.",
+          ],
+        },
+        {
+          heading: "Status & outcome",
+          paragraphs: [
+            "Work is ongoing. This case study does not imply a completed migration, production deployment, or release.",
+          ],
+        },
+      ],
+    },
     images: [],
     architecture: campusSecureArchitecture,
   },
@@ -419,13 +531,36 @@ Status — This case study describes work performed; it does not imply the appli
         href: "https://github.com/JesterByte/ghmp_map_maker",
       },
     ],
-    details: `Context — Our academic team developed a memorial-lot and payment management system intended to replace spreadsheet-based tracking.
-
-My contribution — Led a three-member team and handled the software development work across customer-facing, kiosk, administrative, and mapping-related functionality.
-
-Technical approach — Explored OpenStreetMap integration and PayMongo payments.
-
-Outcome — The project received Thesis of the Year recognition. This is an academic thesis project; no claim is made that it is currently used in production.`,
+    caseStudy: {
+      role: "Academic thesis · Team lead and software developer",
+      status: "Academic project · not represented as production",
+      sections: [
+        {
+          heading: "Context",
+          paragraphs: [
+            "Our academic team developed a memorial-lot and payment management system intended to improve tracking previously handled in spreadsheets.",
+          ],
+        },
+        {
+          heading: "My contribution",
+          paragraphs: [
+            "Led a three-member team and handled software development across customer-facing, kiosk, administrative, and mapping-related functionality.",
+          ],
+        },
+        {
+          heading: "Technical approach",
+          paragraphs: [
+            "Explored OpenStreetMap integration and PayMongo payments.",
+          ],
+        },
+        {
+          heading: "Outcome & scope",
+          paragraphs: [
+            "The thesis received Thesis of the Year recognition. This remains an academic project; no claim is made that the system is currently used in production.",
+          ],
+        },
+      ],
+    },
     images: [
       "/projects/ghmp-dashboard.png",
       "/projects/ghmp-landing-page.png",
@@ -436,16 +571,40 @@ Outcome — The project received Thesis of the Year recognition. This is an acad
     title: "Cebu Agua Lab · Laravel/Vue application",
     category: "Legacy web application",
     description:
-      "Worked with an existing Laravel and Vue.js codebase and identified architectural weaknesses that made ongoing maintenance harder.",
-    tech: ["Laravel", "PHP", "Vue.js"],
+      "Worked with a legacy Laravel/Vuexy web application whose controller, model, and schema practices had unclear separation of concerns.",
+    tech: ["Laravel", "PHP", "Vue.js", "Query Builder"],
     links: {},
-    details: `Context — The existing Laravel and Vue.js application had architectural weaknesses.
-
-My contribution — Worked within the existing codebase and its constraints.
-
-Technical observations — Models were being used as helper classes, database queries were written directly in controllers, and the project lacked proper database migrations.
-
-Scope — This describes experience understanding and working with the legacy architecture; it does not claim a complete rewrite.`,
+    caseStudy: {
+      role: "Junior Developer · Vox Dei Protocol Systems, Inc.",
+      status: "Legacy application work · scope of refactor not documented",
+      sections: [
+        {
+          heading: "Context & challenge",
+          paragraphs: [
+            "This was a separate Laravel/Vuexy web application associated with Cebu Agua Lab.",
+            "The legacy code used models as helper classes, performed database operations through Query Builder in controllers, and lacked database migrations.",
+          ],
+        },
+        {
+          heading: "My contribution",
+          paragraphs: [
+            "Worked with the existing application and its legacy structure.",
+          ],
+        },
+        {
+          heading: "Technical approach",
+          paragraphs: [
+            "Worked in the existing Laravel/PHP and Vue.js codebase. Specific refactoring changes are not documented in enough detail to claim these concerns were fully resolved.",
+          ],
+        },
+        {
+          heading: "Outcome & scope",
+          paragraphs: [
+            "This case study records experience with the legacy system; it does not claim a complete rewrite or a specific migration outcome.",
+          ],
+        },
+      ],
+    },
     images: [],
     architecture: cebuLaravelArchitecture,
   },

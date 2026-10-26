@@ -34,8 +34,9 @@ const items: TimelineItem[] = [
     type: "Education",
     title: "B.S. Computer Science · ACLC College of Santa Maria",
     date: "Graduated June 2025",
-    dateTime: "2025",
+    dateTime: "2025-06",
     startYear: 2025,
+    startMonth: 6,
     description:
       "Earned my Bachelor of Science in Computer Science. Recognitions included Thesis of the Year and Web Developer of the Year, with gold and silver placements in local and regional web development competitions.",
     tags: [

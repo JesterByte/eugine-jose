@@ -24,31 +24,12 @@ import {
 import {
   Github,
   ExternalLink,
-  ScrollText,
   ImageIcon,
   ZoomIn,
 } from "lucide-react";
-import ArchitectureDiagram, {
-  ProjectArchitecture,
-} from "./ArchitectureDiagram";
-
-interface Project {
-  title: string;
-  category: string;
-  description: string;
-  details: string;
-  tech: string[];
-  images: string[];
-  architecture?: ProjectArchitecture;
-  repositories?: {
-    label: string;
-    href: string;
-  }[];
-  links: {
-    github?: string | null;
-    live?: string | null;
-  };
-}
+import ArchitectureDiagram from "./ArchitectureDiagram";
+import ProjectCaseStudy from "./ProjectCaseStudy";
+import type { Project } from "@/lib/project-content";
 
 export default function ProjectModal({ project }: { project: Project }) {
   return (
@@ -164,15 +145,7 @@ export default function ProjectModal({ project }: { project: Project }) {
             </div>
           </div>
 
-          <div className="space-y-4">
-            <h4 className="text-xs font-bold flex items-center gap-2 uppercase tracking-[0.2em] text-primary/80">
-              <ScrollText className="w-4 h-4" />
-              Project Breakdown
-            </h4>
-            <div className="whitespace-pre-wrap rounded-2xl border border-border/40 bg-muted/40 p-6 text-sm font-medium leading-relaxed text-muted-foreground">
-              {project.details}
-            </div>
-          </div>
+          <ProjectCaseStudy caseStudy={project.caseStudy} />
 
           {project.repositories && project.repositories.length > 1 && (
             <div className="flex flex-wrap gap-x-5 gap-y-2">
