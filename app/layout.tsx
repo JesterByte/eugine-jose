@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
-import ParticleBackground from "@/components/ParticleBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,34 +17,34 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://eugine-jose.vercel.app",
-  ),
-  title: "Eugine Jose – Web & Mobile Developer",
+  metadataBase: new URL("https://eugine-jose.vercel.app"),
+  alternates: {
+    canonical: "/",
+  },
+  title: "Eugine Jose | Software Engineer",
   keywords: [
     "Software Engineer",
-    "Full-stack Developer Philippines",
+    "Full-stack Software Engineer",
+    "Application Modernization",
     "Laravel",
     "Flutter",
-    "Next.js",
-    "Bitrix24 API",
+    "C#",
+    ".NET",
+    "MVVM",
+    "Offline-first Applications",
   ],
   authors: [{ name: "Eugine Jose" }],
   description:
-    "Software Engineer specializing in Backend Reliability, Business Automation, and Mobile Development. Awarded 'Thesis of the Year' and 'Web Developer of the Year.'",
+    "Backend-minded full-stack software engineer focused on application modernization, Flutter, Laravel, and .NET. Building maintainable mobile, web, and desktop software.",
   openGraph: {
-    title: "Eugine Jose | Software Engineer",
+    title: "Eugine Jose | Software Engineer & Application Modernization",
     description:
-      "Architecting reliable backend systems and fluid mobile experiences.",
-    url: "https://your-portfolio-domain.com", // Update this after deployment
+      "Modernizing legacy applications and building reliable mobile, web, and desktop software.",
+    url: "https://eugine-jose.vercel.app",
     siteName: "Eugine Jose Portfolio",
     images: [
       {
-        url: "/preview.png", // Create a 1200x630 image and put it in /public
-        width: 1200,
-        height: 630,
+        url: "/preview.png",
         alt: "Eugine Jose Portfolio Preview",
       },
     ],
@@ -55,7 +54,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Eugine Jose | Software Engineer",
-    description: "Building the future with Next.js, Flutter, and Laravel.",
+    description:
+      "Application modernization, Flutter, Laravel, and .NET engineering.",
     images: ["/preview.png"],
   },
   icons: {
@@ -83,6 +83,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased text-foreground min-h-screen flex flex-col scroll-smooth`}
       >
+        <a
+          href="#main-content"
+          className="sr-only z-[100] rounded-md bg-background px-4 py-2 text-foreground focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        >
+          Skip to content
+        </a>
         <ThemeProvider
           attribute={"class"}
           defaultTheme="system"
@@ -90,9 +96,8 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ScrollProgressBar />
-          <ParticleBackground />
           <Header />
-          <main className="grow" role="main">
+          <main id="main-content" className="grow">
             {children}
           </main>
           <Footer />

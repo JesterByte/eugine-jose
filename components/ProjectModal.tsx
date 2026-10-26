@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import Image from "next/image";
 import { Gallery, Item } from "react-photoswipe-gallery";
 import "photoswipe/dist/photoswipe.css";
@@ -21,22 +21,25 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
 import {
   Github,
   ExternalLink,
   ScrollText,
   ImageIcon,
-  Award,
   ZoomIn,
 } from "lucide-react";
 
 interface Project {
   title: string;
+  category: string;
   description: string;
   details: string;
   tech: string[];
   images: string[];
+  repositories?: {
+    label: string;
+    href: string;
+  }[];
   links: {
     github?: string | null;
     live?: string | null;
@@ -44,8 +47,6 @@ interface Project {
 }
 
 export default function ProjectModal({ project }: { project: Project }) {
-  const autoplay = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
-
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -66,83 +67,78 @@ export default function ProjectModal({ project }: { project: Project }) {
           }
         }}
       >
-        <Gallery
-          options={{
-            bgOpacity: 0.98,
-            padding: { top: 40, bottom: 40, left: 10, right: 10 },
-            closeOnVerticalDrag: true,
-          }}
-        >
-          <div className="relative w-full bg-black group/carousel">
-            <Carousel
-              plugins={[autoplay.current]}
-              className="w-full"
-              onMouseEnter={autoplay.current.stop}
-              onMouseLeave={autoplay.current.reset}
-            >
-              <CarouselContent>
-                {project.images.map((img, idx) => (
-                  <CarouselItem key={idx}>
-                    <Item
-                      original={img}
-                      thumbnail={img}
-                      width="1600"
-                      height="900"
-                    >
-                      {({ ref, open }) => (
-                        <div
-                          ref={
-                            ref as unknown as React.MutableRefObject<HTMLDivElement>
-                          }
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            open(e);
-                          }}
-                          className="relative aspect-video w-full overflow-hidden cursor-zoom-in group/image"
-                        >
-                          <Image
-                            src={img}
-                            alt={`${project.title} slide ${idx + 1}`}
-                            fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            className="object-cover transition-transform duration-500 group-hover/image:scale-105"
-                            priority
-                          />
-                          <div className="absolute inset-0 bg-black/20 opacity-0 group-hover/carousel:opacity-100 flex items-center justify-center transition-opacity duration-300 pointer-events-none">
-                            <ZoomIn className="w-10 h-10 text-white/70" />
+        {project.images.length > 0 && (
+          <Gallery
+            options={{
+              bgOpacity: 0.98,
+              padding: { top: 40, bottom: 40, left: 10, right: 10 },
+              closeOnVerticalDrag: true,
+            }}
+          >
+            <div className="group/carousel relative w-full bg-black">
+              <Carousel
+                className="w-full"
+              >
+                <CarouselContent>
+                  {project.images.map((img, idx) => (
+                    <CarouselItem key={img}>
+                      <Item
+                        original={img}
+                        thumbnail={img}
+                        width="1600"
+                        height="900"
+                      >
+                        {({ ref, open }) => (
+                          <div
+                            ref={
+                              ref as unknown as React.MutableRefObject<HTMLDivElement>
+                            }
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              open(e);
+                            }}
+                            className="group/image relative aspect-video w-full cursor-zoom-in overflow-hidden"
+                          >
+                            <Image
+                              src={img}
+                              alt={`${project.title} screenshot ${idx + 1}`}
+                              fill
+                              sizes="(max-width: 768px) 100vw, 768px"
+                              className="object-cover transition-transform duration-500 group-hover/image:scale-105"
+                            />
+                            <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 transition-opacity duration-300 group-hover/carousel:opacity-100">
+                              <ZoomIn className="size-10 text-white/70" />
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </Item>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
+                        )}
+                      </Item>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
 
-              <div className="absolute bottom-4 right-4 z-10 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full text-[10px] text-white flex items-center gap-2 border border-white/10 pointer-events-none font-medium">
-                <ImageIcon className="w-3.5 h-3.5" />
-                {project.images.length} Photos
-              </div>
+                <div className="pointer-events-none absolute bottom-4 right-4 z-10 flex items-center gap-2 rounded-full border border-white/10 bg-black/60 px-3 py-1.5 text-[10px] font-medium text-white backdrop-blur-md">
+                  <ImageIcon aria-hidden="true" className="size-3.5" />
+                  {project.images.length} photos
+                </div>
 
-              <div className="hidden md:block">
-                <CarouselPrevious className="left-4 bg-black/20 hover:bg-black/80 border-none text-white backdrop-blur-sm" />
-                <CarouselNext className="right-4 bg-black/20 hover:bg-black/80 border-none text-white backdrop-blur-sm" />
-              </div>
-            </Carousel>
-          </div>
-        </Gallery>
+                <div className="hidden md:block">
+                  <CarouselPrevious className="left-4 border-none bg-black/20 text-white backdrop-blur-sm hover:bg-black/80" />
+                  <CarouselNext className="right-4 border-none bg-black/20 text-white backdrop-blur-sm hover:bg-black/80" />
+                </div>
+              </Carousel>
+            </div>
+          </Gallery>
+        )}
 
         <div className="p-6 sm:p-10 space-y-8">
           <div className="space-y-4">
             <DialogHeader className="text-left">
               <div className="flex items-center gap-2 mb-2">
-                {project.title.toLowerCase().includes("green haven") && (
-                  <div className="bg-primary/10 text-primary border border-primary/20 text-[10px] font-bold px-3 py-1 rounded-full flex items-center gap-1.5 uppercase tracking-wider">
-                    <Award className="w-3.5 h-3.5" />
-                    Top Technical Project
-                  </div>
-                )}
+                <span className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-primary">
+                  {project.category}
+                </span>
               </div>
-              <DialogTitle className="text-2xl md:text-4xl font-bold tracking-tight italic uppercase text-foreground">
+              <DialogTitle className="text-2xl font-bold tracking-tight text-foreground md:text-4xl">
                 {project.title}
               </DialogTitle>
               <DialogDescription className="text-muted-foreground mt-2">
@@ -167,10 +163,27 @@ export default function ProjectModal({ project }: { project: Project }) {
               <ScrollText className="w-4 h-4" />
               Project Breakdown
             </h4>
-            <div className="text-sm leading-relaxed text-muted-foreground whitespace-pre-wrap bg-muted/40 p-6 rounded-2xl border border-border/40 font-medium">
+            <div className="whitespace-pre-wrap rounded-2xl border border-border/40 bg-muted/40 p-6 text-sm font-medium leading-relaxed text-muted-foreground">
               {project.details}
             </div>
           </div>
+
+          {project.repositories && project.repositories.length > 1 && (
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              {project.repositories.map((repository) => (
+                <a
+                  key={repository.href}
+                  href={repository.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-sm text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
+                >
+                  {repository.label}
+                  <ExternalLink aria-hidden="true" className="size-3.5" />
+                </a>
+              ))}
+            </div>
+          )}
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             {project.links.github && (

@@ -19,13 +19,9 @@ interface MobileNavProps {
     name: string;
     id: string;
   }[];
-  scrollToSection: (id: string) => void;
 }
 
-export default function MobileNav({
-  navItems,
-  scrollToSection,
-}: MobileNavProps) {
+export default function MobileNav({ navItems }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -37,7 +33,8 @@ export default function MobileNav({
           <Button
             variant="ghost"
             size="icon"
-            className="hover:bg-primary/10 rounded-full active:scale-95 transition-transform"
+            aria-label="Open navigation menu"
+            className="rounded-full transition-transform hover:bg-primary/10 active:scale-95"
           >
             <Menu className="w-6 h-6" />
           </Button>
@@ -77,11 +74,9 @@ export default function MobileNav({
                           ease: "easeOut",
                         }}
                       >
-                        <button
-                          onClick={() => {
-                            setIsOpen(false);
-                            setTimeout(() => scrollToSection(item.id), 300);
-                          }}
+                        <a
+                          href={`#${item.id}`}
+                          onClick={() => setIsOpen(false)}
                           className="group flex items-center justify-between w-full py-4 text-left border-b border-border/5 hover:text-primary transition-colors"
                         >
                           <div className="flex items-center">
@@ -93,7 +88,7 @@ export default function MobileNav({
                             </span>
                           </div>
                           <ArrowRight className="w-4 h-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all text-primary" />
-                        </button>
+                        </a>
                       </motion.div>
                     ))}
                 </AnimatePresence>
@@ -108,30 +103,31 @@ export default function MobileNav({
               transition={{ delay: 0.4 }}
               className="space-y-6"
             >
-              <div className="space-y-1">
-                <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
-                  Location
-                </p>
-                <p className="text-sm font-medium">Bocaue, Philippines</p>
-              </div>
-
               <div className="flex gap-3">
                 {[
                   {
                     icon: <Github className="w-5 h-5" />,
                     href: "https://github.com/JesterByte",
+                    label: "GitHub profile",
                   },
                   {
                     icon: <Linkedin className="w-5 h-5" />,
-                    href: "https://linkedin.com/...",
+                    href: "https://www.linkedin.com/in/eugine-jose-b31156215/",
+                    label: "LinkedIn profile",
                   },
-                  { icon: <Mail className="w-5 h-5" />, href: "mailto:..." },
+                  {
+                    icon: <Mail className="w-5 h-5" />,
+                    href: "mailto:ejjose94@gmail.com",
+                    label: "Email Eugine",
+                  },
                 ].map((social, i) => (
                   <a
                     key={i}
                     href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    aria-label={social.label}
+                    {...(social.href.startsWith("https://")
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
                     className="p-3 rounded-xl bg-muted/50 border border-border/50 active:bg-primary active:text-primary-foreground transition-all"
                   >
                     {social.icon}

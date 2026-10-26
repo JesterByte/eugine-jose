@@ -1,84 +1,25 @@
-"use client";
-
 import ScrollReveal from "@/components/ScrollReveal";
-import SkillsOrbit from "@/components/SkillsOrbit";
-import { Badge } from "@/components/ui/badge";
 
 const skillCategories = [
   {
-    title: "Backend & Databases", // Placed first as it's your professional core
-    skills: [
-      {
-        name: "Laravel",
-        icon: "https://www.vectorlogo.zone/logos/laravel/laravel-icon.svg",
-      },
-      {
-        name: "PHP",
-        icon: "https://www.vectorlogo.zone/logos/php/php-icon.svg",
-      },
-      {
-        name: "PostgreSQL",
-        icon: "https://www.vectorlogo.zone/logos/postgresql/postgresql-icon.svg",
-      },
-      {
-        name: "MySQL",
-        icon: "https://www.vectorlogo.zone/logos/mysql/mysql-icon.svg",
-      },
-      {
-        name: "Supabase",
-        icon: "https://www.vectorlogo.zone/logos/supabase/supabase-icon.svg",
-      },
-    ],
+    title: "Languages & frameworks",
+    skills: ["PHP", "Laravel", "Dart", "Flutter", "C#", ".NET", "Vue.js", "TypeScript", "Next.js"],
   },
   {
-    title: "Frontend & Mobile", // Your versatile "other half"
-    skills: [
-      {
-        name: "Flutter",
-        icon: "https://www.vectorlogo.zone/logos/flutterio/flutterio-icon.svg",
-      },
-      {
-        name: "Next.js",
-        icon: "https://cdn.worldvectorlogo.com/logos/next-js.svg",
-      },
-      {
-        name: "React",
-        icon: "https://www.vectorlogo.zone/logos/reactjs/reactjs-icon.svg",
-      },
-      {
-        name: "TypeScript",
-        icon: "https://www.vectorlogo.zone/logos/typescriptlang/typescriptlang-icon.svg",
-      },
-      {
-        name: "Tailwind",
-        icon: "https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg",
-      },
-      {
-        name: "Livewire",
-        icon: "https://raw.githubusercontent.com/livewire/livewire/main/art/logo.svg",
-      },
-    ],
+    title: "Mobile & desktop",
+    skills: ["Flutter", "WinUI 3", "WinForms", "Cordova"],
   },
   {
-    title: "Tools & Intelligence", // Highlighting your modern workflow
-    skills: [
-      {
-        name: "Docker",
-        icon: "https://www.vectorlogo.zone/logos/docker/docker-icon.svg",
-      },
-      {
-        name: "Git",
-        icon: "https://www.vectorlogo.zone/logos/git-scm/git-scm-icon.svg",
-      },
-      {
-        name: "Vercel",
-        icon: "https://www.vectorlogo.zone/logos/vercel/vercel-icon.svg",
-      },
-      {
-        name: "OpenAI",
-        icon: "https://www.svgrepo.com/show/306500/openai.svg",
-      },
-    ],
+    title: "Architecture & application design",
+    skills: ["MVVM", "Riverpod", "Repository pattern", "Service layer", "Offline-first design"],
+  },
+  {
+    title: "Data & integrations",
+    skills: ["PostgreSQL", "MySQL", "SQLite / Drift", "REST APIs", "JSON integrations", "Bitrix24 CRM"],
+  },
+  {
+    title: "Delivery & synchronization",
+    skills: ["API synchronization", "Firebase Remote Config", "AWS EC2", "Git"],
   },
 ];
 
@@ -86,61 +27,35 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="py-24 max-w-6xl mx-auto px-6 scroll-mt-20 overflow-hidden"
+      className="mx-auto max-w-6xl scroll-mt-24 px-6 py-24 md:py-32"
     >
       <ScrollReveal>
-        <h2 className="text-3xl md:text-5xl font-bold mb-16 text-center tracking-tight italic">
-          Technical Arsenal<span className="text-primary">.</span>
+        <p className="mb-3 font-mono text-sm uppercase tracking-widest text-primary">
+          Technical toolkit
+        </p>
+        <h2 className="max-w-2xl text-3xl font-semibold tracking-tight md:text-5xl">
+          Tools I use to solve practical engineering problems.
         </h2>
       </ScrollReveal>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <ScrollReveal
-          delay={0.2}
-          className="flex justify-center order-2 lg:order-1"
-        >
-          <div className="relative group">
-            <div className="absolute inset-0 bg-primary/5 blur-[100px] rounded-full" />
-            <SkillsOrbit />
-          </div>
-        </ScrollReveal>
-
-        <div className="space-y-10 order-1 lg:order-2">
-          {skillCategories.map((category, idx) => (
-            <ScrollReveal key={category.title} delay={0.1 * idx}>
-              <div className="space-y-4">
-                <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-primary/70">
-                  {category.title}
-                </h3>
-                <div className="flex flex-wrap gap-3">
-                  {category.skills.map((skill) => (
-                    <Badge
-                      key={skill.name}
-                      variant="secondary"
-                      className="pl-2 pr-4 py-1.5 rounded-full bg-muted/30 border-border/50 hover:border-primary/50 transition-all group/badge"
-                    >
-                      <div className="w-5 h-5 mr-2 rounded-full overflow-hidden flex items-center justify-center bg-white/10 p-1">
-                        <img
-                          src={skill.icon}
-                          alt={skill.name}
-                          className="w-full h-full object-contain grayscale group-hover/badge:grayscale-0 transition-all"
-                        />
-                      </div>
-                      <span className="text-sm font-medium">{skill.name}</span>
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-            </ScrollReveal>
-          ))}
-
-          <ScrollReveal delay={0.5}>
-            <p className="text-sm text-muted-foreground pt-6 border-t border-border/40 italic">
-              Currently deep-diving into: Advanced Riverpod Architectures &
-              Automated Backend Testing.
-            </p>
+      <div className="mt-12 grid gap-x-12 gap-y-9 sm:grid-cols-2">
+        {skillCategories.map((category, index) => (
+          <ScrollReveal key={category.title} delay={index * 0.05}>
+            <div className="border-t border-border pt-5">
+              <h3 className="mb-4 text-sm font-semibold">{category.title}</h3>
+              <ul className="flex flex-wrap gap-2">
+                {category.skills.map((skill) => (
+                  <li
+                    key={skill}
+                    className="rounded-full border border-border bg-muted/40 px-3 py-1.5 text-sm text-muted-foreground"
+                  >
+                    {skill}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </ScrollReveal>
-        </div>
+        ))}
       </div>
     </section>
   );

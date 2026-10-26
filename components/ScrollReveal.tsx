@@ -1,4 +1,6 @@
-import { motion, Variants } from "framer-motion";
+"use client";
+
+import { motion, useReducedMotion, Variants } from "framer-motion";
 import { ReactNode } from "react";
 
 interface ScrollRevealProps {
@@ -17,12 +19,16 @@ export default function ScrollReveal({
   delay = 0,
   className,
 }: ScrollRevealProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <motion.div
-      initial="hidden"
-      whileInView="visible"
+      initial={shouldReduceMotion ? false : "hidden"}
+      whileInView={shouldReduceMotion ? undefined : "visible"}
       viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.8, ease: "easeOut", delay }}
+      transition={
+        shouldReduceMotion ? { duration: 0 } : { duration: 0.8, ease: "easeOut", delay }
+      }
       variants={revealVariants}
       className={`w-full ${className || ""}`}
     >
