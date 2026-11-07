@@ -1,13 +1,6 @@
 import Image from "next/image";
 import ScrollReveal from "@/components/ScrollReveal";
 
-const recognitions = [
-  "Thesis of the Year",
-  "Web Developer of the Year",
-  "Regional competition · Silver",
-  "Local competition · Gold",
-];
-
 export default function About() {
   return (
     <section
@@ -28,11 +21,11 @@ export default function About() {
           <div className="mx-auto max-w-sm">
             <Image
               src="/profile.png"
-              width={540}
-              height={540}
+              width={800}
+              height={800}
               alt="Portrait of Eugine Jose"
               className="aspect-square rounded-2xl border border-border object-cover"
-              sizes="(max-width: 768px) 80vw, 30vw"
+              sizes="(max-width: 640px) 80vw, 384px"
             />
           </div>
         </ScrollReveal>
@@ -40,34 +33,23 @@ export default function About() {
         <ScrollReveal delay={0.2}>
           <div className="space-y-5 text-base leading-relaxed text-muted-foreground md:text-lg">
             <p>
-              I&apos;m a backend-minded full-stack software engineer from the
-              Philippines. I enjoy taking applications with difficult
-              constraints—legacy architecture, unreliable connectivity, or
-              complex integrations—and making them easier to maintain and use.
+              I&apos;m a software engineer from the Philippines specializing in
+              modernizing legacy applications, improving software architecture,
+              and building reliable solutions across mobile, web, and desktop
+              platforms.
             </p>
             <p>
-              My hands-on work spans Flutter, PHP and Laravel, Vue.js, and C#
-              desktop applications. I&apos;ve restructured applications toward
-              MVVM, added offline storage and API synchronization, and worked
-              with client-specific CRM integrations.
+              My work includes Flutter, PHP/Laravel, C#/.NET, TypeScript, and
+              Vue.js. I focus on separation of concerns and practical,
+              requirement-driven structure, alongside offline storage, API
+              synchronization, and client-specific CRM integrations.
             </p>
             <p>
               I earned a Bachelor of Science in Computer Science from ACLC
-              College of Santa Maria in 2025. My academic work received
-              recognition for both its thesis and web development, alongside
-              awards in regional and local competitions.
+              College of Santa Maria in 2025, where I received Thesis of the
+              Year and Web Developer of the Year awards.
             </p>
           </div>
-          <ul className="mt-8 flex flex-wrap gap-2" aria-label="Recognition">
-            {recognitions.map((recognition) => (
-              <li
-                key={recognition}
-                className="rounded-full border border-border bg-muted/40 px-3 py-1.5 text-xs font-medium text-foreground"
-              >
-                {recognition}
-              </li>
-            ))}
-          </ul>
         </ScrollReveal>
       </div>
     </section>

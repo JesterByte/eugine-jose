@@ -22,16 +22,20 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import {
-  Github,
   ExternalLink,
   ImageIcon,
   ZoomIn,
 } from "lucide-react";
 import ArchitectureDiagram from "./ArchitectureDiagram";
 import ProjectCaseStudy from "./ProjectCaseStudy";
-import type { Project } from "@/lib/project-content";
+import type { Project, ProjectMediaItem } from "@/lib/project-content";
 
 export default function ProjectModal({ project }: { project: Project }) {
+  const galleryMedia = project.media.filter(
+    (item): item is ProjectMediaItem & { src: string } =>
+      typeof item.src === "string",
+  );
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -54,7 +58,7 @@ export default function ProjectModal({ project }: { project: Project }) {
       >
         {project.architecture ? (
           <ArchitectureDiagram architecture={project.architecture} />
-        ) : project.images.length > 0 ? (
+        ) : galleryMedia.length > 0 ? (
           <Gallery
             options={{
               bgOpacity: 0.98,
@@ -67,11 +71,11 @@ export default function ProjectModal({ project }: { project: Project }) {
                 className="w-full"
               >
                 <CarouselContent>
-                  {project.images.map((img, idx) => (
-                    <CarouselItem key={img}>
+                  {galleryMedia.map((media) => (
+                    <CarouselItem key={media.src}>
                       <Item
-                        original={img}
-                        thumbnail={img}
+                        original={media.src}
+                        thumbnail={media.src}
                         width="1600"
                         height="900"
                       >
@@ -84,11 +88,23 @@ export default function ProjectModal({ project }: { project: Project }) {
                               e.stopPropagation();
                               open(e);
                             }}
-                            className="group/image relative aspect-video w-full cursor-zoom-in overflow-hidden"
+                            onKeyDown={(event) => {
+                              if (
+                                event.key === "Enter" ||
+                                event.key === " "
+                              ) {
+                                event.preventDefault();
+                                event.currentTarget.click();
+                              }
+                            }}
+                            className="group/image relative aspect-video w-full cursor-zoom-in overflow-hidden focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                            tabIndex={0}
+                            role="button"
+                            aria-label={`Open full-size image: ${media.caption}`}
                           >
                             <Image
-                              src={img}
-                              alt={`${project.title} screenshot ${idx + 1}`}
+                              src={media.src}
+                              alt={media.alt}
                               fill
                               sizes="(max-width: 768px) 100vw, 768px"
                               className="object-cover transition-transform duration-500 group-hover/image:scale-105"
@@ -105,7 +121,7 @@ export default function ProjectModal({ project }: { project: Project }) {
 
                 <div className="pointer-events-none absolute bottom-4 right-4 z-10 flex items-center gap-2 rounded-full border border-white/10 bg-black/60 px-3 py-1.5 text-[10px] font-medium text-white backdrop-blur-md">
                   <ImageIcon aria-hidden="true" className="size-3.5" />
-                  {project.images.length} photos
+                  {galleryMedia.length} photos
                 </div>
 
                 <div className="hidden md:block">
@@ -133,54 +149,11 @@ export default function ProjectModal({ project }: { project: Project }) {
               </DialogDescription>
             </DialogHeader>
 
-            <div className="flex flex-wrap gap-2">
-              {project.tech.map((t) => (
-                <span
-                  key={t}
-                  className="text-[10px] font-mono bg-secondary text-secondary-foreground px-2.5 py-1 rounded-md border border-border/50"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
           </div>
 
-          <ProjectCaseStudy caseStudy={project.caseStudy} />
-
-          {project.repositories && project.repositories.length > 1 && (
-            <div className="flex flex-wrap gap-x-5 gap-y-2">
-              {project.repositories.map((repository) => (
-                <a
-                  key={repository.href}
-                  href={repository.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-sm text-primary underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
-                >
-                  {repository.label}
-                  <ExternalLink aria-hidden="true" className="size-3.5" />
-                </a>
-              ))}
-            </div>
-          )}
+          <ProjectCaseStudy project={project} />
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            {project.links.github && (
-              <Button
-                asChild
-                variant="outline"
-                className="w-full sm:flex-1 h-14 rounded-2xl border-primary/20 hover:bg-primary/5 text-base font-semibold"
-              >
-                <a
-                  href={project.links.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-3"
-                >
-                  <Github className="w-5 h-5" /> Source Code
-                </a>
-              </Button>
-            )}
             {project.links.live && (
               <Button
                 asChild

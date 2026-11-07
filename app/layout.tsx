@@ -1,10 +1,17 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollProgressBar from "@/components/ScrollProgressBar";
+import {
+  GITHUB_PROFILE_URL,
+  LINKEDIN_PROFILE_URL,
+  PORTFOLIO_TITLE,
+  SITE_URL,
+} from "@/lib/site-identity";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,35 +24,38 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://eugine-jose.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   alternates: {
     canonical: "/",
   },
-  title: "Eugine Jose | Software Engineer",
+  title: {
+    default: PORTFOLIO_TITLE,
+    template: "%s | Eugine Jose",
+  },
   keywords: [
-    "Software Engineer",
-    "Full-stack Software Engineer",
     "Application Modernization",
-    "Laravel",
     "Flutter",
-    "C#",
+    "Laravel",
     ".NET",
-    "MVVM",
+    "TypeScript",
+    "Software Engineer",
     "Offline-first Applications",
   ],
   authors: [{ name: "Eugine Jose" }],
   description:
-    "Backend-minded full-stack software engineer focused on application modernization, Flutter, Laravel, and .NET. Building maintainable mobile, web, and desktop software.",
+    "Application modernization with Flutter, Laravel, and .NET, focused on practical, maintainable software across mobile, web, and desktop.",
   openGraph: {
-    title: "Eugine Jose | Software Engineer & Application Modernization",
+    title: PORTFOLIO_TITLE,
     description:
-      "Modernizing legacy applications and building reliable mobile, web, and desktop software.",
-    url: "https://eugine-jose.vercel.app",
+      "Application modernization with Flutter, Laravel, .NET, and TypeScript across mobile, web, and desktop.",
+    url: `${SITE_URL}/`,
     siteName: "Eugine Jose Portfolio",
     images: [
       {
-        url: "/preview.png",
-        alt: "Eugine Jose Portfolio Preview",
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Eugine Jose — Software Engineer specializing in application modernization",
       },
     ],
     locale: "en_US",
@@ -53,16 +63,20 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Eugine Jose | Software Engineer",
+    title: PORTFOLIO_TITLE,
     description:
       "Application modernization, Flutter, Laravel, and .NET engineering.",
-    images: ["/preview.png"],
+    images: [
+      {
+        url: "/opengraph-image",
+        alt: "Eugine Jose — Software Engineer specializing in application modernization",
+      },
+    ],
   },
   icons: {
     icon: [
       {
         url: "/favicon.svg",
-        href: "/favicon.svg",
       },
     ],
     apple: [
@@ -73,16 +87,31 @@ export const metadata: Metadata = {
   },
 };
 
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Eugine Jose",
+  jobTitle: "Software Engineer",
+  url: `${SITE_URL}/`,
+  sameAs: [GITHUB_PROFILE_URL, LINKEDIN_PROFILE_URL],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased text-foreground min-h-screen flex flex-col scroll-smooth`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-foreground min-h-screen flex flex-col`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
+          }}
+        />
         <a
           href="#main-content"
           className="sr-only z-[100] rounded-md bg-background px-4 py-2 text-foreground focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
@@ -97,11 +126,12 @@ export default function RootLayout({
         >
           <ScrollProgressBar />
           <Header />
-          <main id="main-content" className="grow">
+          <main id="main-content" className="grow" tabIndex={-1}>
             {children}
           </main>
           <Footer />
         </ThemeProvider>
+        {process.env.VERCEL === "1" && <Analytics />}
       </body>
     </html>
   );

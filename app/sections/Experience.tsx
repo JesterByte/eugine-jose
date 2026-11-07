@@ -15,8 +15,8 @@ export default function Experience() {
           A background in building, supporting, and improving software.
         </h2>
         <p className="mt-5 max-w-2xl text-muted-foreground">
-          Dates are omitted where they have not been verified. Project case
-          studies describe specific modernization work.
+          Project case studies describe my work across mobile, web, and desktop
+          applications.
         </p>
       </ScrollReveal>
 

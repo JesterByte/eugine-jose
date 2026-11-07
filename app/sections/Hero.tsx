@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
 import ScrollReveal from "@/components/ScrollReveal";
+import { RESUME_PDF_URL } from "@/lib/site-identity";
 
 export default function Hero() {
   return (
@@ -18,15 +19,15 @@ export default function Hero() {
             SOFTWARE ENGINEER
           </p>
           <h1 className="text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
-            Modernizing legacy applications.
+            Modernize what exists.
             <span className="mt-2 block text-primary">
-              Building reliable software.
+              Build what’s next.
             </span>
           </h1>
           <p className="mt-8 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-            I work across mobile, web, and desktop—improving existing
-            applications with maintainable architecture, offline capabilities,
-            and practical integrations.
+            I modernize existing applications and build new features across
+            mobile, web, and desktop, focusing on maintainable architecture,
+            offline capabilities, and practical integrations.
           </p>
           <p className="mt-4 font-mono text-sm text-muted-foreground">
             Flutter <span className="px-2 text-primary">/</span> Laravel{" "}
@@ -41,7 +42,7 @@ export default function Hero() {
               Explore selected work <ArrowRight aria-hidden="true" size={18} />
             </a>
             <a
-              href="/Eugine_Jose_Resume.pdf"
+              href={RESUME_PDF_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border px-6 font-semibold transition-colors hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
@@ -55,6 +56,9 @@ export default function Hero() {
               Get in touch <ArrowDown aria-hidden="true" size={18} />
             </a>
           </div>
+          <p className="mt-5 text-sm text-muted-foreground">
+            Open to remote opportunities · Bocaue, Philippines (UTC+8)
+          </p>
         </ScrollReveal>
       </div>
     </section>

@@ -1,14 +1,30 @@
 import type { ProjectArchitecture } from "@/components/ArchitectureDiagram";
 
-export interface CaseStudySection {
-  heading: string;
-  paragraphs: string[];
+export interface OfflineSyncDesign {
+  localStore: string;
+  synchronization: string;
+  conflicts: string;
+  retries: string;
+  queue: string;
+  updateDelivery: string;
 }
 
 export interface ProjectCaseStudy {
   role: string;
   status: string;
-  sections: CaseStudySection[];
+  problem: string;
+  approach: string[];
+  tradeoff: string;
+  result: string;
+  proof: string;
+  metrics?: { label: string; value: string }[];
+  offlineSync?: OfflineSyncDesign;
+}
+
+export interface ProjectMediaItem {
+  src?: string;
+  alt: string;
+  caption: string;
 }
 
 export interface Project {
@@ -24,7 +40,7 @@ export interface Project {
     label: string;
     href: string;
   }[];
-  images: string[];
+  media: ProjectMediaItem[];
   architecture?: ProjectArchitecture;
   caseStudy: ProjectCaseStudy;
 }

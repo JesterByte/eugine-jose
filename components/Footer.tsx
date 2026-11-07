@@ -1,7 +1,10 @@
-"use client";
-
 import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 import { Button } from "./ui/button";
+import {
+  CONTACT_EMAIL,
+  GITHUB_PROFILE_URL,
+  LINKEDIN_PROFILE_URL,
+} from "@/lib/site-identity";
 
 export default function Footer() {
   return (
@@ -19,17 +22,17 @@ export default function Footer() {
           {[
             {
               icon: Github,
-              href: "https://github.com/JesterByte",
+              href: GITHUB_PROFILE_URL,
               label: "GitHub profile",
             },
             {
               icon: Linkedin,
-              href: "https://www.linkedin.com/in/eugine-jose-b31156215/",
+              href: LINKEDIN_PROFILE_URL,
               label: "LinkedIn profile",
             },
             {
               icon: Mail,
-              href: "mailto:ejjose94@gmail.com",
+              href: `mailto:${CONTACT_EMAIL}`,
               label: "Email Eugine",
             },
           ].map(({ icon: Icon, href, label }) => (

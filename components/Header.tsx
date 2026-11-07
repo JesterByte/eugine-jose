@@ -1,9 +1,9 @@
-"use client";
-
 import { ThemeToggle } from "./ThemeToggle";
 import ScrollReveal from "./ScrollReveal";
 import { Button } from "./ui/button";
 import MobileNav from "./MobileNav";
+import { FileDown } from "lucide-react";
+import { RESUME_PDF_URL } from "@/lib/site-identity";
 
 export default function Header() {
   const navItems = [
@@ -27,14 +27,29 @@ export default function Header() {
         <nav className="hidden md:flex items-center gap-6">
           {navItems.map((item, index) => (
             <ScrollReveal key={item.id} delay={0.2 * (index + 1)}>
-              <Button asChild variant="ghost">
+              <Button
+                asChild
+                variant={item.id === "contact" ? "default" : "ghost"}
+              >
                 <a href={`#${item.id}`}>
                   {item.name}
                 </a>
               </Button>
             </ScrollReveal>
           ))}
-          <ScrollReveal delay={0.8}>
+          <ScrollReveal delay={1}>
+            <Button asChild variant="outline">
+              <a
+                href={RESUME_PDF_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FileDown aria-hidden="true" />
+                Résumé
+              </a>
+            </Button>
+          </ScrollReveal>
+          <ScrollReveal delay={1.1}>
             <ThemeToggle />
           </ScrollReveal>
         </nav>

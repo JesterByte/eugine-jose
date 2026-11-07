@@ -1,6 +1,13 @@
 "use client";
 
-import { Menu, Github, Linkedin, Mail, ArrowRight } from "lucide-react";
+import {
+  Menu,
+  Github,
+  Linkedin,
+  Mail,
+  ArrowRight,
+  FileDown,
+} from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { Button } from "./ui/button";
 import {
@@ -12,7 +19,13 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import {
+  CONTACT_EMAIL,
+  GITHUB_PROFILE_URL,
+  LINKEDIN_PROFILE_URL,
+  RESUME_PDF_URL,
+} from "@/lib/site-identity";
 
 interface MobileNavProps {
   navItems: {
@@ -23,9 +36,25 @@ interface MobileNavProps {
 
 export default function MobileNav({ navItems }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
-    <div className="flex items-center gap-2 md:hidden">
+    <div className="flex items-center gap-1 md:hidden">
+      <Button asChild variant="ghost" size="icon">
+        <a href="#contact" aria-label="Go to contact section">
+          <Mail aria-hidden="true" />
+        </a>
+      </Button>
+      <Button asChild variant="outline" size="icon">
+        <a
+          href={RESUME_PDF_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Open résumé PDF"
+        >
+          <FileDown aria-hidden="true" />
+        </a>
+      </Button>
       <ThemeToggle />
 
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -65,14 +94,20 @@ export default function MobileNav({ navItems }: MobileNavProps) {
                     navItems.map((item, index) => (
                       <motion.div
                         key={item.id}
-                        initial={{ y: 15, opacity: 0 }}
+                        initial={
+                          shouldReduceMotion ? false : { y: 15, opacity: 0 }
+                        }
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{
-                          delay: 0.05 * index,
-                          duration: 0.25,
-                          ease: "easeOut",
-                        }}
+                        transition={
+                          shouldReduceMotion
+                            ? { duration: 0 }
+                            : {
+                                delay: 0.05 * index,
+                                duration: 0.25,
+                                ease: "easeOut",
+                              }
+                        }
                       >
                         <a
                           href={`#${item.id}`}
@@ -98,26 +133,30 @@ export default function MobileNav({ navItems }: MobileNavProps) {
 
           <div className="p-6 bg-background/50 border-t border-border/40">
             <motion.div
-              initial={{ opacity: 0 }}
+              initial={shouldReduceMotion ? false : { opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : { delay: 0.4, duration: 0.25 }
+              }
               className="space-y-6"
             >
               <div className="flex gap-3">
                 {[
                   {
                     icon: <Github className="w-5 h-5" />,
-                    href: "https://github.com/JesterByte",
+                    href: GITHUB_PROFILE_URL,
                     label: "GitHub profile",
                   },
                   {
                     icon: <Linkedin className="w-5 h-5" />,
-                    href: "https://www.linkedin.com/in/eugine-jose-b31156215/",
+                    href: LINKEDIN_PROFILE_URL,
                     label: "LinkedIn profile",
                   },
                   {
                     icon: <Mail className="w-5 h-5" />,
-                    href: "mailto:ejjose94@gmail.com",
+                    href: `mailto:${CONTACT_EMAIL}`,
                     label: "Email Eugine",
                   },
                 ].map((social, i) => (
