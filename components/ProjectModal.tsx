@@ -56,7 +56,7 @@ export default function ProjectModal({ project }: { project: Project }) {
           }
         }}
       >
-        {project.architecture ? (
+        {project.architecture && !project.caseStudy.modernization ? (
           <ArchitectureDiagram architecture={project.architecture} />
         ) : galleryMedia.length > 0 ? (
           <Gallery

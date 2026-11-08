@@ -2,53 +2,115 @@ import type { Project } from "@/lib/project-content";
 import type { ProjectArchitecture } from "@/components/ArchitectureDiagram";
 
 const aguaLabFlutterArchitecture: ProjectArchitecture = {
-  title: "Cebu Agua Lab Flutter application",
-  caption: "Offline request capture, queued API uploads, and update delivery.",
+  title: "Cebu Agua Lab application architecture",
+  caption:
+    "A layered MVVM-oriented structure and an in-app APK update flow with user-confirmed Android installation.",
   accessibleDescription:
-    "Cebu Agua Lab Flutter architecture showing offline water-testing requests stored in Drift and SQLite, queued uploads to the Laravel API, and update checks using Firebase Remote Config.",
+    "Diagram of the Cebu Agua Lab layered MVVM-oriented application architecture and APK update flow from Firebase Remote Config through AWS EC2 to Android's package installer.",
   views: [
     {
-      title: "Offline request capture",
+      title: "Layered MVVM-oriented architecture",
       status: "Implemented",
       description:
-        "The implementation favors practical requirement delivery over strict MVVM adherence.",
+        "Presentation, application logic, data access, and entities are organized by responsibility without claiming strict adherence to every MVVM convention.",
       flows: [
         {
-          label: "Application and local queue",
-          direction: "related",
+          label: "UI and business-logic flow",
+          direction: "forward",
           nodes: [
-            { label: "Flutter / Dart", kind: "application" },
-            { label: "Riverpod", detail: "State management", kind: "logic" },
             {
-              label: "Drift / SQLite",
-              detail: "Local store and pending requests",
+              label: "View",
+              detail: "Presents UI and handles interactions",
+              kind: "application",
+            },
+            {
+              label: "ViewModel",
+              detail: "Coordinates view-triggered operations",
+              kind: "logic",
+            },
+            {
+              label: "Service",
+              detail: "Application and business operations",
+              kind: "logic",
+            },
+            {
+              label: "Repository",
+              detail: "Abstracts Drift database access",
               kind: "storage",
             },
           ],
         },
         {
-          label: "Queued request upload",
-          direction: "forward",
+          label: "Application entities",
           nodes: [
-            { label: "Drift / SQLite queue", kind: "storage" },
-            { label: "Laravel API", detail: "Master data", kind: "remote" },
+            {
+              label: "Model",
+              detail: "Defines Request, Client, and Test entities",
+              kind: "application",
+            },
           ],
         },
       ],
     },
     {
-      title: "Over-the-air updates",
+      title: "Offline request capture and API sync",
       status: "Implemented",
       description:
-        "Firebase provides the latest version, download URL, and file size; an outdated app prompts for an update and displays release notes.",
+        "Staff can record water-testing requests locally; pending requests are queued for upload to the Laravel API.",
       flows: [
         {
-          label: "Version check and update prompt",
+          label: "Request capture and queued upload",
           direction: "forward",
           nodes: [
-            { label: "Firebase Remote Config", kind: "remote" },
-            { label: "Flutter version check", kind: "logic" },
-            { label: "Download prompt and release notes", kind: "application" },
+            {
+              label: "Flutter application",
+              detail: "Staff request entry",
+              kind: "application",
+            },
+            {
+              label: "Drift / SQLite",
+              detail: "Local requests and upload queue",
+              kind: "storage",
+            },
+            {
+              label: "Laravel API",
+              detail: "Request synchronization",
+              kind: "remote",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "In-app APK update delivery",
+      status: "Implemented",
+      description:
+        "Firebase Remote Config provides release information; AWS EC2 hosts the APK. Android's system installer requires staff confirmation.",
+      flows: [
+        {
+          label: "Release check, download, and install handoff",
+          direction: "forward",
+          nodes: [
+            {
+              label: "Firebase Remote Config",
+              detail: "Release version and APK download information",
+              kind: "remote",
+            },
+            {
+              label: "Flutter application",
+              detail: "Checks release and offers optional or mandatory update",
+              kind: "application",
+            },
+            {
+              label: "AWS EC2",
+              detail: "Hosts downloadable APK assets",
+              kind: "remote",
+            },
+            {
+              label: "Android package installer",
+              detail: "Staff reviews and confirms installation",
+              kind: "logic",
+            },
           ],
         },
       ],
@@ -190,16 +252,18 @@ const campusSecureArchitecture: ProjectArchitecture = {
 
 const projects: Project[] = [
   {
-    title: "Cebu Agua Lab · Flutter application",
-    category: "Offline-first mobile modernization",
+    title: "Cebu Agua Lab — Flutter Application Modernization",
+    category: "Business application modernization",
     description:
-      "Offline-first Flutter application for Cebu Agua Lab. Staff can record water-testing requests locally and upload queued entries to the Laravel API.",
+      "Modernized a legacy business application into a more responsive, maintainable Flutter app with an improved staff experience, offline request capture, layered MVVM-oriented architecture, and in-app APK update delivery.",
     tech: [
       "Flutter",
       "Dart",
       "Riverpod",
-      "Drift / SQLite",
-      "Remote API",
+      "GoRouter",
+      "Drift",
+      "SQLite",
+      "Laravel API",
       "Firebase Remote Config",
       "AWS EC2",
     ],
@@ -212,35 +276,94 @@ const projects: Project[] = [
       },
     ],
     caseStudy: {
-      role: "I rebuilt the Flutter application, introduced Riverpod state management, implemented Drift/SQLite persistence and queued uploads to the Laravel API, and implemented version checks and update prompts using Firebase Remote Config.",
-      status: "Client feedback received",
+      role: "I modernized the staff-facing Flutter application, improved its UI and navigation, introduced a layered MVVM-oriented structure, and implemented an in-app APK update flow. The application also supports offline water-testing request capture with queued uploads to the Laravel API.",
+      status: "Used by staff; qualitative feedback received",
       problem:
-        "Staff needed to record water-testing requests in low-connectivity settings and sync them with the Laravel API, which remains the master data source.",
+        "The legacy business application was slow to respond during loading and navigation, had an outdated interface, and relied on staff to download and install updates from Google Drive. Its implementation also needed clearer separation between presentation, business logic, and data access.",
       approach: [
-        "Rebuilt the mobile client in Flutter and Dart and used Riverpod for state management.",
-        "Used Drift/SQLite to store local data and queue staff-entered water-testing requests for upload to the Laravel API.",
-        "Used Firebase Remote Config to provide the latest app version, download URL, and file size; outdated versions prompt for download and show release notes.",
+        "Redesigned staff workflows with more intuitive screens and clearer form-field instructions.",
+        "Used Riverpod for reactive state updates and GoRouter to improve navigation structure.",
+        "Organized the application around View, ViewModel, Service, Repository, and Model responsibilities.",
+        "Moved update discovery into the application, using Firebase Remote Config for release information and AWS EC2 for APK downloads.",
       ],
       tradeoff:
-        "I did not enforce strict MVVM; a practical structure made it easier to implement the project requirements.",
+        "The structure is MVVM-oriented rather than a claim of strict, textbook MVVM. It provides clearer responsibility boundaries while staying practical for the application.",
       result:
-        "The client praised the rewrite's look and performance, and the app became significantly more intuitive to use.",
-      // TODO(eugine): add one real metric (startup time, sync success rate, screens migrated, active users)
+        "The modernized application gives staff a more intuitive interface and a smoother-feeling day-to-day experience, while replacing the previous manual Google Drive update handoff with an in-app, user-confirmed installation flow.",
       proof:
-        "Client-owned codebase; the screenshot above is shown for illustration.",
-      offlineSync: {
-        localStore:
-          "Drift / SQLite stores local data and water-testing requests entered by staff.",
-        synchronization:
-          "The app uploads water-testing request transactions to the Laravel API, which is the master data source.",
-        conflicts:
-          "Not applicable: the API is the master for data, and the app uploads water-testing request transactions.",
-        retries:
-          "A failed sync can be retried with a button; each attempt has a 30-second limit.",
-        queue:
-          "Staff can enter requests offline; pending local writes remain queued for later sync.",
-        updateDelivery:
-          "Firebase returns the latest version, download URL, and file size. If the app is outdated, it prompts for download and displays release notes.",
+        "The application is client-owned. The project image is illustrative; no before-and-after screenshots or formal performance measurements are available.",
+      modernization: {
+        objectives: [
+          "Make common staff workflows easier to understand and complete.",
+          "Improve perceived responsiveness across loading and navigation.",
+          "Reduce maintenance friction and replace manual update distribution.",
+        ],
+        legacyChallenges: [
+          "Slow loading and navigation made the application feel less fluid.",
+          "The outdated interface made common staff workflows less intuitive.",
+          "Google Drive updates required staff to download and install each APK manually.",
+          "UI responsibilities, data access, and business logic needed clearer separation.",
+        ],
+        experienceImprovements: [
+          "Introduced a more intuitive, modern interface for staff workflows.",
+          "Added clearer form-field instructions to guide staff through operations.",
+          "Used Riverpod for more reactive UI updates and GoRouter for clearer navigation.",
+        ],
+        responsivenessNote:
+          "Staff experience the redesigned application as smoother than the previous version. No formal performance benchmarks were collected, so this is an observed user-experience improvement rather than a measured speed claim.",
+        architectureLayers: [
+          {
+            name: "View",
+            responsibility:
+              "Presents the UI and handles user interactions, keeping presentation concerns separate from business logic.",
+          },
+          {
+            name: "ViewModel",
+            responsibility:
+              "Coordinates operations triggered by the view and communicates with the Service layer.",
+          },
+          {
+            name: "Service",
+            responsibility:
+              "Handles application and business logic required by the ViewModel.",
+          },
+          {
+            name: "Repository",
+            responsibility:
+              "Abstracts data access and communicates with the Drift database.",
+          },
+          {
+            name: "Model",
+            responsibility:
+              "Defines application entities, including Request, Client, and Test.",
+          },
+        ],
+        architectureBenefits: [
+          "Separates responsibilities so application logic is easier to follow.",
+          "Makes debugging and maintenance more straightforward.",
+          "Allows UI changes without unnecessarily coupling them to data access or business logic.",
+        ],
+        previousUpdateWorkflow: [
+          "Updates were uploaded to Google Drive.",
+          "Staff manually downloaded the APK.",
+          "Staff manually installed the update.",
+        ],
+        modernizedUpdateWorkflow: [
+          "Firebase Remote Config stores the release version and APK download information.",
+          "The app checks the configured release and presents an update dialog when appropriate.",
+          "The app downloads the APK from an AWS EC2-hosted distribution endpoint.",
+          "The app launches Android's package installer; staff confirms installation there.",
+        ],
+        updateSafeguards: [
+          "Supports both mandatory and optional updates.",
+          "Allows a download to be retried after interruption.",
+          "Preserves the existing installation if an installation attempt fails.",
+          "Maintains backward compatibility between consecutive releases.",
+        ],
+        staffFeedback: [
+          "Staff praised the redesigned interface.",
+          "The manager appreciated the application's modernization.",
+        ],
       },
     },
     architecture: aguaLabFlutterArchitecture,

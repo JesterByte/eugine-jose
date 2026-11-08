@@ -71,8 +71,8 @@ export default function ArchitectureDiagram({
         </p>
       </figcaption>
 
-      <div className="overflow-x-auto p-3 sm:p-5">
-        <div className="min-w-[38rem] space-y-3">
+      <div className="p-3 sm:p-5">
+        <div className="min-w-0 space-y-3">
           {architecture.views.map((view) => (
             <section
               key={view.title}

@@ -9,6 +9,22 @@ export interface OfflineSyncDesign {
   updateDelivery: string;
 }
 
+export interface ProjectModernization {
+  objectives: string[];
+  legacyChallenges: string[];
+  experienceImprovements: string[];
+  responsivenessNote: string;
+  architectureLayers: {
+    name: string;
+    responsibility: string;
+  }[];
+  architectureBenefits: string[];
+  previousUpdateWorkflow: string[];
+  modernizedUpdateWorkflow: string[];
+  updateSafeguards: string[];
+  staffFeedback: string[];
+}
+
 export interface ProjectCaseStudy {
   role: string;
   status: string;
@@ -19,6 +35,7 @@ export interface ProjectCaseStudy {
   proof: string;
   metrics?: { label: string; value: string }[];
   offlineSync?: OfflineSyncDesign;
+  modernization?: ProjectModernization;
 }
 
 export interface ProjectMediaItem {
